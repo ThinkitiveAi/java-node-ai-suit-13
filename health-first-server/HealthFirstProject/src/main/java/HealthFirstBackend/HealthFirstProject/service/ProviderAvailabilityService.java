@@ -2,6 +2,7 @@ package HealthFirstBackend.HealthFirstProject.service;
 
 import HealthFirstBackend.HealthFirstProject.dto.ProviderAvailabilityRequestDTO;
 import HealthFirstBackend.HealthFirstProject.dto.ProviderAvailabilityResponseDTO;
+import HealthFirstBackend.HealthFirstProject.dto.ProviderAvailabilityListResponseDTO;
 import HealthFirstBackend.HealthFirstProject.model.*;
 import HealthFirstBackend.HealthFirstProject.repository.ProviderAvailabilityRepository;
 import HealthFirstBackend.HealthFirstProject.repository.AppointmentSlotRepository;
@@ -89,6 +90,91 @@ public class ProviderAvailabilityService {
         data.setTotal_appointments_available(slots.size());
         response.setData(data);
 
+        return response;
+    }
+
+    public ProviderAvailabilityListResponseDTO getAvailabilitySlots(UUID providerId) {
+        List<ProviderAvailability> availabilities = availabilityRepository.findByProviderId(providerId);
+        
+        if (availabilities.isEmpty()) {
+            throw new IllegalArgumentException("No availability slots found for provider: " + providerId);
+        }
+
+        ProviderAvailabilityListResponseDTO response = new ProviderAvailabilityListResponseDTO();
+        response.setSuccess(true);
+        response.setMessage("Availability slots retrieved successfully");
+
+        ProviderAvailabilityListResponseDTO.Data data = new ProviderAvailabilityListResponseDTO.Data();
+        data.setProvider_id(providerId.toString());
+        data.setTotal_slots(availabilities.size());
+
+        List<ProviderAvailabilityListResponseDTO.Data.AvailabilitySlot> availabilitySlots = new ArrayList<>();
+        ProviderAvailabilityListResponseDTO.Data.Summary summary = new ProviderAvailabilityListResponseDTO.Data.Summary();
+
+        int totalAvailable = 0, totalBooked = 0, totalCancelled = 0, totalBlocked = 0;
+
+        for (ProviderAvailability availability : availabilities) {
+            ProviderAvailabilityListResponseDTO.Data.AvailabilitySlot slot = new ProviderAvailabilityListResponseDTO.Data.AvailabilitySlot();
+            slot.setId(availability.getId().toString());
+            slot.setDate(availability.getDate());
+            slot.setStart_time(availability.getStartTime());
+            slot.setEnd_time(availability.getEndTime());
+            slot.setTimezone(availability.getTimezone());
+            slot.setStatus(availability.getStatus().name());
+            slot.setAppointment_type(availability.getAppointmentType().name());
+            slot.setMax_appointments_per_slot(availability.getMaxAppointmentsPerSlot());
+            slot.setCurrent_appointments(availability.getCurrentAppointments());
+            slot.setAvailable_appointments(availability.getMaxAppointmentsPerSlot() - availability.getCurrentAppointments());
+            slot.setNotes(availability.getNotes());
+            slot.setSpecial_requirements(availability.getSpecialRequirements());
+
+            // Map location
+            if (availability.getLocation() != null) {
+                ProviderAvailabilityListResponseDTO.Data.AvailabilitySlot.Location location = 
+                    new ProviderAvailabilityListResponseDTO.Data.AvailabilitySlot.Location();
+                location.setType(availability.getLocation().getType().name());
+                location.setAddress(availability.getLocation().getAddress());
+                location.setRoom_number(availability.getLocation().getRoomNumber());
+                slot.setLocation(location);
+            }
+
+            // Map pricing
+            if (availability.getPricing() != null) {
+                ProviderAvailabilityListResponseDTO.Data.AvailabilitySlot.Pricing pricing = 
+                    new ProviderAvailabilityListResponseDTO.Data.AvailabilitySlot.Pricing();
+                pricing.setBase_fee(availability.getPricing().getBaseFee());
+                pricing.setInsurance_accepted(availability.getPricing().isInsuranceAccepted());
+                pricing.setCurrency(availability.getPricing().getCurrency());
+                slot.setPricing(pricing);
+            }
+
+            availabilitySlots.add(slot);
+
+            // Update summary counts
+            switch (availability.getStatus()) {
+                case AVAILABLE:
+                    totalAvailable++;
+                    break;
+                case BOOKED:
+                    totalBooked++;
+                    break;
+                case CANCELLED:
+                    totalCancelled++;
+                    break;
+                case BLOCKED:
+                    totalBlocked++;
+                    break;
+            }
+        }
+
+        data.setAvailability_slots(availabilitySlots);
+        summary.setTotal_available_slots(totalAvailable);
+        summary.setTotal_booked_slots(totalBooked);
+        summary.setTotal_cancelled_slots(totalCancelled);
+        summary.setTotal_blocked_slots(totalBlocked);
+        data.setSummary(summary);
+
+        response.setData(data);
         return response;
     }
 

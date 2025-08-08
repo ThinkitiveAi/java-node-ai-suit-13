@@ -11,4 +11,11 @@ public interface AppointmentSlotRepository extends JpaRepository<AppointmentSlot
     List<AppointmentSlot> findByAvailabilityId(UUID availabilityId);
     List<AppointmentSlot> findByProviderIdAndStatus(UUID providerId, AppointmentSlot.Status status);
     List<AppointmentSlot> findByPatientId(UUID patientId);
+    
+    // New methods for appointment booking
+    List<AppointmentSlot> findByProviderIdAndSlotStartTimeAndStatus(UUID providerId, LocalDateTime slotStartTime, AppointmentSlot.Status status);
+    List<AppointmentSlot> findByProviderIdAndStatusOrderBySlotStartTime(UUID providerId, AppointmentSlot.Status status);
+    List<AppointmentSlot> findByPatientIdAndStatusOrderBySlotStartTime(UUID patientId, AppointmentSlot.Status status);
+    List<AppointmentSlot> findByProviderIdOrderBySlotStartTime(UUID providerId);
+    List<AppointmentSlot> findByPatientIdOrderBySlotStartTime(UUID patientId);
 } 

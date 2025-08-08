@@ -11,4 +11,5 @@ public interface ProviderAvailabilityRepository extends JpaRepository<ProviderAv
     List<ProviderAvailability> findByProviderIdAndDateBetween(UUID providerId, LocalDate startDate, LocalDate endDate);
     List<ProviderAvailability> findByProviderIdAndStatus(UUID providerId, ProviderAvailability.Status status);
     List<ProviderAvailability> findByProviderIdAndDateBetweenAndStatus(UUID providerId, LocalDate startDate, LocalDate endDate, ProviderAvailability.Status status);
+    List<ProviderAvailability> findByProviderId(UUID providerId);
 } 
