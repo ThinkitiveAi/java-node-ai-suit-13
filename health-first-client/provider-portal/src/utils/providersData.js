@@ -1,0 +1,90 @@
+export const dummyProviders = [
+  {
+    id: 1,
+    firstName: 'Dr. Sarah',
+    lastName: 'Johnson',
+    email: 'sarah.johnson@healthcare.com',
+    phone: '+1 (555) 123-4567',
+    specialization: 'Cardiology',
+    licenseNumber: 'MD123456',
+    yearsExperience: '15',
+    streetAddress: '123 Medical Center Dr',
+    city: 'New York',
+    state: 'NY',
+    zipCode: '10001'
+  },
+  {
+    id: 2,
+    firstName: 'Dr. Michael',
+    lastName: 'Chen',
+    email: 'michael.chen@healthcare.com',
+    phone: '+1 (555) 234-5678',
+    specialization: 'Neurology',
+    licenseNumber: 'MD234567',
+    yearsExperience: '12',
+    streetAddress: '456 Neurology Ave',
+    city: 'Los Angeles',
+    state: 'CA',
+    zipCode: '90210'
+  },
+  {
+    id: 3,
+    firstName: 'Dr. Emily',
+    lastName: 'Rodriguez',
+    email: 'emily.rodriguez@healthcare.com',
+    phone: '+1 (555) 345-6789',
+    specialization: 'Pediatrics',
+    licenseNumber: 'MD345678',
+    yearsExperience: '8',
+    streetAddress: '789 Children\'s Way',
+    city: 'Chicago',
+    state: 'IL',
+    zipCode: '60601'
+  },
+  {
+    id: 4,
+    firstName: 'Dr. James',
+    lastName: 'Wilson',
+    email: 'james.wilson@healthcare.com',
+    phone: '+1 (555) 456-7890',
+    specialization: 'Orthopedics',
+    licenseNumber: 'MD456789',
+    yearsExperience: '20',
+    streetAddress: '321 Bone & Joint Blvd',
+    city: 'Houston',
+    state: 'TX',
+    zipCode: '77001'
+  },
+  {
+    id: 5,
+    firstName: 'Dr. Lisa',
+    lastName: 'Thompson',
+    email: 'lisa.thompson@healthcare.com',
+    phone: '+1 (555) 567-8901',
+    specialization: 'Dermatology',
+    licenseNumber: 'MD567890',
+    yearsExperience: '10',
+    streetAddress: '654 Skin Care Lane',
+    city: 'Miami',
+    state: 'FL',
+    zipCode: '33101'
+  }
+];
+
+export const specializations = [
+  'Cardiology',
+  'Dermatology',
+  'Endocrinology',
+  'Gastroenterology',
+  'General Practice',
+  'Gynecology',
+  'Neurology',
+  'Oncology',
+  'Ophthalmology',
+  'Orthopedics',
+  'Pediatrics',
+  'Psychiatry',
+  'Radiology',
+  'Surgery',
+  'Urology'
+]; 
